@@ -78,7 +78,14 @@ function init() {
    for (var i = 0; i < puzzleButtons.length; i++) {
       puzzleButtons[i].onclick = swapPuzzle;
    }
+
+   setupPuzzle();
+
+   // Add an event listener for the mouseup event
+   document.addEventListener("mouseup", endBackground);
 }
+
+var cellBackground;
 
 function swapPuzzle(e) {
 
@@ -111,6 +118,45 @@ function setupPuzzle() {
    // Set the initial color of each cell to gold
    for (var i = 0; i < puzzleCells.length; i++) {
       puzzleCells[i].style.backgroundColor = "rgb(233,207,29)";
+
+      // Set the celll background color in response to the mousedown event
+      puzzleCells[i].onmousedown = setBackground;
+   }
+}
+
+function setBackground(e) {
+   var cursorType;
+   // Set BG based on keyboard key
+   if (e.shiftKey) {
+      cellBackground = "rgb(233,207,29)";
+      cursorType = "url(../img/jpf_eraser.png), cell";
+   } else if (e.altKey) {
+      cellBackground = "rgb(255,255,255)";
+      cursorType = "url(../img/jpf_cross.png) 7 6, crosshair";
+   } else {
+      cellBackground = "rgb(101,101,101)";
+      cursorType = "url(../img/jpf_pencil.png), pointer";
+   }
+
+   e.target.style.backgroundColor = cellBackground;
+   e.preventDefault();
+
+   // Create an event listener for every puzzle cell
+   for (var i = 0; i < puzzleCells.length; i++) {
+      puzzleCells[i].addEventListener("mouseenter", extendBackground);
+      puzzleCells[i].style.cursor = cursorType;
+   }
+}
+
+function extendBackground(e) {
+   e.target.style.backgroundColor = cellBackground;
+}
+
+function endBackground() {
+   // Remove the event listener for every puzzle cell
+   for (var i = 0; i < puzzleCells.length; i++) {
+      puzzleCells[i].removeEventListener("mouseenter", extendBackground);
+      puzzleCells[i].style.cursor = "url(../img/jpf_pencil.png), pointer";
    }
 }
 
