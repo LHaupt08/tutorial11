@@ -64,8 +64,6 @@
 
 window.onload = init;
 
-var puzzleCells;
-
 function init() {
 
    // Insert the titile for the first puzzle
@@ -96,8 +94,6 @@ function init() {
    );
 }
 
-var cellBackground;
-
 function swapPuzzle(e) {
 
    var puzzleID = e.target.id;
@@ -122,6 +118,9 @@ function swapPuzzle(e) {
    setupPuzzle();
 }
 
+var puzzleCells;
+var cellBackground;
+
 function setupPuzzle() {
    // Match all of the data cells in the puzzle
    puzzleCells = document.querySelectorAll("table#hanjieGrid td");
@@ -138,22 +137,25 @@ function setupPuzzle() {
    var filled = document.querySelectorAll("table#hanjieGrid td.filled");
    var empty = document.querySelectorAll("table#hanjieGrid td.empty");
 
+
+
    // Create an event listener to highlight incorrect cells
    document.getElementById("peek").addEventListener("click", function() {
 
+      /* 
+      * ! Problem: Peek Button is not working. I believe it's the if loops?*/
+
          // Display incorrect white cells in pink
          for (var i = 0; i < filled.length; i++) {
-            if (filled[i].style.backgroundColor === "rgb(255,255,255)") {
-               filled[i].style.backgroundColor = "rgb(255,211,211)";
-               window.alert("check");
+            if (filled[i].style.backgroundColor === "rgb(255, 255, 255)") {
+               filled[i].style.backgroundColor = "rgb(255, 211, 211)";
             }
          }
 
          //Display incorrect gray cells in red
          for (var i = 0; i < empty.length; i++) {
-            if(empty[i].style.backgroundColor === "rgb(101,101,101)") {
-               empty[i].style.backgroundColor = "rgb(255,101,101)";
-               window.alert("check");
+            if(empty[i].style.backgroundColor === "rgb(101, 101, 101)") {
+               empty[i].style.backgroundColor = "rgb(255, 101, 101)";
             }
          }
 
@@ -163,16 +165,11 @@ function setupPuzzle() {
 
                // Change the color of each tile back to the correct color
                for (var i = 0; i < puzzleCells.length; i++) {
-                  if (puzzleCells[i].style.backgroundColor === "rgb(255,211,211)") {
-                     puzzleCells[i].style.backgroundColor = "rgb(255,255,255)";
-                     window.alert("check");
+                  if (puzzleCells[i].style.backgroundColor === "rgb(255, 211, 211)") {
+                     puzzleCells[i].style.backgroundColor = "rgb(255, 255, 255)";
                   }
-               }
-
-               for (var i = 0; i < puzzleCells.length; i++) {
-                  if(puzzleCells[i].style.backgroundColor === "rgb(255,101,101)") {
-                     puzzleCells[i].style.backgroundColor = "rgb(101,101,101)";
-                     window.alert("check");
+                  if(puzzleCells[i].style.backgroundColor === "rgb(255, 101, 101)") {
+                     puzzleCells[i].style.backgroundColor = "rgb(101, 101, 101)";
                   }
                }
                
@@ -197,13 +194,16 @@ function setBackground(e) {
    }
 
    e.target.style.backgroundColor = cellBackground;
-   e.preventDefault();
 
    // Create an event listener for every puzzle cell
    for (var i = 0; i < puzzleCells.length; i++) {
       puzzleCells[i].addEventListener("mouseenter", extendBackground);
       puzzleCells[i].style.cursor = cursorType;
+      console.log(puzzleCells[i].style.backgroundColor);
    }
+
+   // Prevent default action of selecting table text
+   e.preventDefault();
 }
 
 function extendBackground(e) {
