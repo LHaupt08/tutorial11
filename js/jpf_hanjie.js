@@ -83,6 +83,17 @@ function init() {
 
    // Add an event listener for the mouseup event
    document.addEventListener("mouseup", endBackground);
+   
+   // Add an event listener to the Show Solution button
+   document.getElementById("solve").addEventListener("click", function() {
+
+         // Remove the inline backgroundColor style from each cell
+         for (var i = 0; i < puzzleCells.length; i++) {
+            puzzleCells[i].style.backgroundColor = "";
+         }
+
+      }
+   );
 }
 
 var cellBackground;
@@ -122,6 +133,53 @@ function setupPuzzle() {
       // Set the celll background color in response to the mousedown event
       puzzleCells[i].onmousedown = setBackground;
    }
+
+   // Create object collections of the filled and empty cells.
+   var filled = document.querySelectorAll("table#hanjieGrid td.filled");
+   var empty = document.querySelectorAll("table#hanjieGrid td.empty");
+
+   // Create an event listener to highlight incorrect cells
+   document.getElementById("peek").addEventListener("click", function() {
+
+         // Display incorrect white cells in pink
+         for (var i = 0; i < filled.length; i++) {
+            if (filled[i].style.backgroundColor === "rgb(255,255,255)") {
+               filled[i].style.backgroundColor = "rgb(255,211,211)";
+               window.alert("check");
+            }
+         }
+
+         //Display incorrect gray cells in red
+         for (var i = 0; i < empty.length; i++) {
+            if(empty[i].style.backgroundColor === "rgb(101,101,101)") {
+               empty[i].style.backgroundColor = "rgb(255,101,101)";
+               window.alert("check");
+            }
+         }
+
+         // Remove the hints after 0.5 seconds
+         setTimeout(
+            function(){
+
+               // Change the color of each tile back to the correct color
+               for (var i = 0; i < puzzleCells.length; i++) {
+                  if (puzzleCells[i].style.backgroundColor === "rgb(255,211,211)") {
+                     puzzleCells[i].style.backgroundColor = "rgb(255,255,255)";
+                     window.alert("check");
+                  }
+               }
+
+               for (var i = 0; i < puzzleCells.length; i++) {
+                  if(puzzleCells[i].style.backgroundColor === "rgb(255,101,101)") {
+                     puzzleCells[i].style.backgroundColor = "rgb(101,101,101)";
+                     window.alert("check");
+                  }
+               }
+               
+            }, 500);
+
+      }
+   );
 }
 
 function setBackground(e) {
